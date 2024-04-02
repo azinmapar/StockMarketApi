@@ -22,5 +22,18 @@ namespace StockMarketApi.Mappers
 
         }
 
+        public static Stock FromCreateStockDto(this CreateStockDto createStockDto) 
+        {
+            return new Stock
+            {
+                Symbol = createStockDto.Symbol,
+                CompanyName = createStockDto.CompanyName,
+                Purchase = createStockDto.Purchase,
+                LastDiv = createStockDto.LastDiv,
+                Industry = createStockDto.Industry,
+                MarketCap = createStockDto.MarketCap,
+            };
+        }
+
     }
 }

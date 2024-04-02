@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockMarketApi.Data;
+using StockMarketApi.DTOs.Stock;
 using StockMarketApi.Mappers;
 
 namespace StockMarketApi.Controllers
@@ -41,6 +42,17 @@ namespace StockMarketApi.Controllers
             {
                 return Ok(stock.ToStockDto());
             }
+
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateStockDto createStockDto)
+        {
+
+            var stockModel = createStockDto.FromCreateStockDto();
+            _context.Stocks.Add(stockModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = stockModel.Id}, stockModel.ToStockDto());
 
         }
 
