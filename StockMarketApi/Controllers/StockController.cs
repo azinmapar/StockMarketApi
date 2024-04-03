@@ -29,7 +29,7 @@ namespace StockMarketApi.Controllers
         }
 
        // [Route("api/[controller]/GetStockById")]
-        [HttpGet("id")]
+        [HttpGet("{id}")]
 
         public IActionResult GetById(int id) 
         {
@@ -53,6 +53,42 @@ namespace StockMarketApi.Controllers
             _context.Stocks.Add(stockModel);
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = stockModel.Id}, stockModel.ToStockDto());
+
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult UpdateById([FromRoute] int id, [FromBody] UpdateStockDto updatedStock)
+        {
+            var currentStock = _context.Stocks.FirstOrDefault(s => s.Id == id);
+            if (currentStock == null)
+            {
+                return NotFound("No such stock");
+            }
+
+            currentStock.Symbol = updatedStock.Symbol;
+            currentStock.CompanyName = updatedStock.CompanyName;
+            currentStock.Purchase = updatedStock.Purchase;
+            currentStock.LastDiv = updatedStock.LastDiv;
+            currentStock.Industry = updatedStock.Industry;
+            currentStock.MarketCap = updatedStock.MarketCap;
+            _context.SaveChanges();
+            return Ok(currentStock.ToStockDto());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteById([FromRoute] int id) 
+        {
+            var stock = _context.Stocks.FirstOrDefault(s => s.Id == id);
+            if (stock == null)    
+            {
+                return NotFound("No such stock");
+            }
+
+            _context.Stocks.Remove(stock);
+            _context.SaveChanges();
+            return NoContent();
 
         }
 
