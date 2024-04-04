@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StockMarketApi.Data;
 using StockMarketApi.DTOs.Stock;
+using StockMarketApi.Interfaces;
 using StockMarketApi.Mappers;
 
 namespace StockMarketApi.Controllers
@@ -10,24 +11,20 @@ namespace StockMarketApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class StockController : ControllerBase
+    public class StockController(ApplicationDbContext context, IStockRepository stockRepo) : ControllerBase
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context = context;
+        private readonly IStockRepository _stockRepo = stockRepo;
 
-        public StockController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-       // [Route("api/[controller]/GetAllStocks")]
+        // [Route("api/[controller]/GetAllStocks")]
         [HttpGet]
         public async Task<IActionResult> GetAll() 
         {
-            var stocks = await _context.Stocks.ToListAsync();
+            var stocks = await _stockRepo.GetAllAsync();
             var stockDto = stocks.Select(s => s.ToStockDto());
 
-            return Ok(stocks);
+            return Ok(stockDto);
         }
 
        // [Route("api/[controller]/GetStockById")]
@@ -35,7 +32,7 @@ namespace StockMarketApi.Controllers
 
         public async Task<IActionResult> GetById(int id) 
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _stockRepo.GetByIdAsync(id);
 
             if (stock == null) 
             {
@@ -52,8 +49,7 @@ namespace StockMarketApi.Controllers
         {
 
             var stockModel = createStockDto.FromCreateStockDto();
-            await _context.Stocks.AddAsync(stockModel);
-            await _context.SaveChangesAsync();
+            await _stockRepo.CreateAsync(stockModel);
             return CreatedAtAction(nameof(GetById), new {id = stockModel.Id}, stockModel.ToStockDto());
 
         }
@@ -62,19 +58,12 @@ namespace StockMarketApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateById([FromRoute] int id, [FromBody] UpdateStockDto updatedStock)
         {
-            var currentStock = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            var currentStock = await _stockRepo.UpdateAsync(id, updatedStock);
             if (currentStock == null)
             {
                 return NotFound("No such stock");
             }
 
-            currentStock.Symbol = updatedStock.Symbol;
-            currentStock.CompanyName = updatedStock.CompanyName;
-            currentStock.Purchase = updatedStock.Purchase;
-            currentStock.LastDiv = updatedStock.LastDiv;
-            currentStock.Industry = updatedStock.Industry;
-            currentStock.MarketCap = updatedStock.MarketCap;
-            await _context.SaveChangesAsync();
             return Ok(currentStock.ToStockDto());
         }
 
@@ -82,14 +71,13 @@ namespace StockMarketApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteById([FromRoute] int id) 
         {
-            var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            var stock = await _stockRepo.DeleteAsync(id);
             if (stock == null)    
             {
                 return NotFound("No such stock");
             }
 
-            _context.Stocks.Remove(stock);
-            await _context.SaveChangesAsync();
+            
             return NoContent();
 
         }
