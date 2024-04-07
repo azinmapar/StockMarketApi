@@ -2,7 +2,7 @@
 
 namespace StockMarketApi.DTOs.Comment
 {
-    public class CreateCommentDto
+    public class UpdateCommentDto
     {
 
         [Required]

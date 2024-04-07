@@ -1,4 +1,5 @@
-﻿using StockMarketApi.Models;
+﻿using StockMarketApi.DTOs.Comment;
+using StockMarketApi.Models;
 
 namespace StockMarketApi.Interfaces
 {
@@ -12,6 +13,8 @@ namespace StockMarketApi.Interfaces
         Task<Comment> CreateAsync(Comment comment);
 
         Task<Comment?> DeleteAsync(int id);
+
+        Task<Comment?> UpdateAsync(int id, UpdateCommentDto updateComment);
 
     }
 }

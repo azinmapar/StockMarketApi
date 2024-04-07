@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StockMarketApi.Data;
+using StockMarketApi.DTOs.Comment;
 using StockMarketApi.Interfaces;
 using StockMarketApi.Models;
 
@@ -40,6 +41,21 @@ namespace StockMarketApi.Repositories
 
              _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
+            return comment;
+        }
+
+        public async Task<Comment?> UpdateAsync(int id, UpdateCommentDto updateComment)
+        {
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
+            if (comment == null)
+            {
+                return null;
+            }
+
+            comment.Content = updateComment.Content;
+            comment.Title = updateComment.Title;
+            await _context.SaveChangesAsync();
+
             return comment;
         }
     }

@@ -29,5 +29,7 @@ namespace StockMarketApi.Mappers
             };
         }
 
+   
+
     }
 }
