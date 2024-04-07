@@ -51,5 +51,17 @@ namespace StockMarketApi.Controllers
 
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var comment = await _commentRepo.DeleteAsync(id);
+            if (comment == null)
+            {
+                return NotFound("no comment with this id");
+            }
+            return Ok(comment);
+        }
+
     }
 }

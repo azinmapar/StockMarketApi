@@ -11,5 +11,7 @@ namespace StockMarketApi.Interfaces
 
         Task<Comment> CreateAsync(Comment comment);
 
+        Task<Comment?> DeleteAsync(int id);
+
     }
 }
