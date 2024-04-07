@@ -1,4 +1,5 @@
-﻿using StockMarketApi.Models;
+﻿using StockMarketApi.DTOs.Comment;
+using StockMarketApi.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockMarketApi.DTOs.Stock
@@ -19,6 +20,8 @@ namespace StockMarketApi.DTOs.Stock
         public string Industry { get; set; } = string.Empty;
 
         public long MarketCap { get; set; }
+
+        public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
 
     }
 

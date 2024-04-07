@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using StockMarketApi.Data;
 using StockMarketApi.DTOs.Stock;
 using StockMarketApi.Interfaces;

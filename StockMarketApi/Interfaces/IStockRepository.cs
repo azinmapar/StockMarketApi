@@ -16,5 +16,7 @@ namespace StockMarketApi.Interfaces
 
         Task<Stock?> DeleteAsync(int id);
 
+        Task<bool> StockExistsAsync(int id);
+
     }
 }
