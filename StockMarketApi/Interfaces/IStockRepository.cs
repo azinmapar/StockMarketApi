@@ -1,4 +1,5 @@
 ﻿using StockMarketApi.DTOs.Stock;
+using StockMarketApi.Helpers;
 using StockMarketApi.Models;
 
 namespace StockMarketApi.Interfaces
@@ -6,7 +7,7 @@ namespace StockMarketApi.Interfaces
     public interface IStockRepository
     {
 
-        Task<List<Stock>> GetAllAsync();
+        Task<List<Stock>> GetAllAsync(QueryObject query);
 
         Task<Stock?> GetByIdAsync(int id);
 

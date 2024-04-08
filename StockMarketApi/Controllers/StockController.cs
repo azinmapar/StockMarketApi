@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockMarketApi.Data;
 using StockMarketApi.DTOs.Stock;
+using StockMarketApi.Helpers;
 using StockMarketApi.Interfaces;
 using StockMarketApi.Mappers;
 
@@ -17,7 +18,7 @@ namespace StockMarketApi.Controllers
 
         // [Route("api/[controller]/GetAllStocks")]
         [HttpGet]
-        public async Task<IActionResult> GetAll() 
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query) 
         {
 
             if (!ModelState.IsValid)
@@ -25,7 +26,7 @@ namespace StockMarketApi.Controllers
                 return BadRequest();
             }
 
-            var stocks = await _stockRepo.GetAllAsync();
+            var stocks = await _stockRepo.GetAllAsync(query);
             var stockDto = stocks.Select(s => s.ToStockDto());
 
             return Ok(stockDto);
