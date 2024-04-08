@@ -28,14 +28,18 @@ namespace StockMarketApi.Repositories
             {
                 if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
                 {
-                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
+                    stocks = query.IsDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
                 } else if (query.SortBy.Equals("CompanyName", StringComparison.OrdinalIgnoreCase))
                 {
-                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.CompanyName) : stocks.OrderBy(s => s.CompanyName);
+                    stocks = query.IsDescending ? stocks.OrderByDescending(s => s.CompanyName) : stocks.OrderBy(s => s.CompanyName);
                 }
             }
 
-            return await stocks.ToListAsync();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+
+
+            return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
 
         }
 
