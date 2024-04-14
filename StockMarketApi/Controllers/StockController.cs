@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StockMarketApi.Data;
 using StockMarketApi.DTOs.Stock;
 using StockMarketApi.Helpers;
@@ -18,6 +19,7 @@ namespace StockMarketApi.Controllers
 
         // [Route("api/[controller]/GetAllStocks")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query) 
         {
 
