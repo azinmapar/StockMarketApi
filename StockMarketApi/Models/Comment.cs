@@ -1,5 +1,9 @@
-﻿namespace StockMarketApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StockMarketApi.Models
 {
+
+    [Table("Comments")]
     public class Comment
     {
 

@@ -2,6 +2,8 @@
 
 namespace StockMarketApi.Models
 {
+
+    [Table("Stocks")]
     public class Stock
     {
 
@@ -19,8 +21,8 @@ namespace StockMarketApi.Models
 
         public long MarketCap { get; set; }
 
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Comment> Comments { get; set; } = [];
 
-
+        public List<Portfolio> Portfolios { get; set; } = [];
     }
 }
