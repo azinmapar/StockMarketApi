@@ -8,6 +8,8 @@ namespace StockMarketApi.Interfaces
     {
 
         Task<List<Stock>> GetAllAsync(QueryObject query);
+        
+        Task<Stock?> GetStockBySymbolAsync(string symbol);
 
         Task<Stock?> GetByIdAsync(int id);
 

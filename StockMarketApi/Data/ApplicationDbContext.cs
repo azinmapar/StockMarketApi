@@ -21,13 +21,13 @@ namespace StockMarketApi.Data
 
             builder.Entity<Portfolio>()
                 .HasOne(u => u.AppUser)
-                .WithMany(u => u.Portfolios)
-                .HasForeignKey(u => u.AppUserId);
+                .WithMany(w => w.Portfolios)
+                .HasForeignKey(p => p.AppUserId);
 
             builder.Entity<Portfolio>()
                 .HasOne(u => u.Stock)
-                .WithMany(u => u.Portfolios)
-                .HasForeignKey(u => u.StockId);
+                .WithMany(w => w.Portfolios)
+                .HasForeignKey(p => p.StockId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
