@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using StockMarketApi.DTOs.Comment;
+using StockMarketApi.Extensions;
 using StockMarketApi.Interfaces;
 using StockMarketApi.Mappers;
+using StockMarketApi.Models;
 
 namespace StockMarketApi.Controllers
 {
@@ -9,11 +12,12 @@ namespace StockMarketApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CommentController(ICommentRepository commentRepo, IStockRepository stockRepo) : ControllerBase
+    public class CommentController(ICommentRepository commentRepo, IStockRepository stockRepo, UserManager<AppUser> userManager) : ControllerBase
     {
 
         private readonly ICommentRepository _commentRepo = commentRepo;
         private readonly IStockRepository _stockRepo = stockRepo;
+        private readonly UserManager<AppUser> _userManager = userManager;
 
 
         [HttpGet]
@@ -62,7 +66,15 @@ namespace StockMarketApi.Controllers
             {
                 return BadRequest("No stock with this id");
             }
+
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+
+
+
             var commentModel = commentDto.FromCreateCommentDto(stockId);
+            commentModel.AppUserId = appUser.Id;
+            commentModel.AppUser = appUser;
             await _commentRepo.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new {id = commentModel.Id}, commentModel.ToCommentDto());
 

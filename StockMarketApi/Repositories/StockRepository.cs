@@ -15,7 +15,7 @@ namespace StockMarketApi.Repositories
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
 
-            var stocks =  _context.Stocks.Include(c => c.Comments).AsQueryable();
+            var stocks =  _context.Stocks.Include(c => c.Comments).ThenInclude(b => b.AppUser).AsQueryable();
             if (!string.IsNullOrWhiteSpace(query.CompanyName))
             {
                 stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
@@ -45,7 +45,7 @@ namespace StockMarketApi.Repositories
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            return await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(s => s.Id == id);
+            return await _context.Stocks.Include(c => c.Comments).ThenInclude(b => b.AppUser).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Stock> CreateAsync(Stock stock)

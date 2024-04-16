@@ -1,4 +1,6 @@
-﻿namespace StockMarketApi.DTOs.Comment
+﻿using StockMarketApi.Models;
+
+namespace StockMarketApi.DTOs.Comment
 {
     public class CommentDto
     {
@@ -9,6 +11,8 @@
         public string Content { get; set; } = string.Empty;
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+        public string CreatedBy { get; set; } = string.Empty;
 
         public int? StockId { get; set; }
 
